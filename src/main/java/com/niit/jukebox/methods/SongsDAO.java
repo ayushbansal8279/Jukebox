@@ -13,7 +13,7 @@ public class SongsDAO {
 // to insert a song in catlog
     public static int insertSong(Songs song) throws Exception {
         int res=0;
-            if (song.getSongId() != 0) {          // when Song is created with songId parameter
+            if (song.getSongId() != 0) {          // when Song is created with songId parameter constructor
                 PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songId,songName,artist,genre,album,duration) values(?,?,?,?,?,?);");
                 selectStatement.setInt(1, song.getSongId());
                 selectStatement.setString(2, song.getSongName());
@@ -23,7 +23,7 @@ public class SongsDAO {
                 selectStatement.setFloat(6, song.getDuration());
                 res = selectStatement.executeUpdate();
             }
-            else {             // when Song is created without songId parameter & songId will auto-generated
+            else {             // when Song is created without songId parameter constructor & songId will auto-generated
                 PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songName,artist,genre,album,duration) values(?,?,?,?,?);");
                 selectStatement.setString(1, song.getSongName());
                 selectStatement.setString(2, song.getArtist());
