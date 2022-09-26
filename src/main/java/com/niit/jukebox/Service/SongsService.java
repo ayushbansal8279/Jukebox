@@ -13,11 +13,10 @@ import java.util.List;
 public class SongsService {
 
     // to check whether a song is already present in catlog or not
-    private static boolean isSongAvailable(Songs song) throws Exception {
-        List<Songs> allSongs=SongsDAO.displayCatlog();
+    public static boolean isSongAvailable(List<Songs> songList,Songs song) throws Exception {
         String name=song.getSongName();
         boolean flag = false;
-        for (Songs currentSong:allSongs){
+        for (Songs currentSong:songList){
             if(currentSong.getSongName().equals(name)){
                 flag=true;
                 break;
@@ -29,7 +28,8 @@ public class SongsService {
     // to add a song in catlog
     public static boolean addSong(Songs song) throws Exception {
         int res=0;
-        if (!isSongAvailable(song)) {
+        List<Songs> songsList=SongsDAO.displayCatlog();
+        if (!isSongAvailable(songsList,song)) {
             res=SongsDAO.insertSong(song);
         }
         return (res==1);
@@ -59,8 +59,9 @@ public class SongsService {
     }
 
     public static List<Songs> songsByAlbum(List<Songs> allSongs,String albumName) {
-        List<Songs> albumCatorizedList =null;
+        List<Songs> albumCatorizedList;
         if(!allSongs.isEmpty() && albumName!=null) {
+            albumCatorizedList=new ArrayList<>();
             Iterator<Songs> ite = allSongs.iterator();
             Songs currentSong;
             while (ite.hasNext()) {
@@ -70,12 +71,16 @@ public class SongsService {
                 }
             }
         }
+        else {
+            albumCatorizedList=null;
+        }
         return albumCatorizedList;
     }
 
     public static List<Songs> songsByArtist(List<Songs> allSongs,String artistName) {
-        List<Songs> artistCatorizedList = null;
+        List<Songs> artistCatorizedList;
         if(!allSongs.isEmpty() && artistName!=null) {
+            artistCatorizedList=new ArrayList<>();
             Iterator<Songs> ite = allSongs.iterator();
             Songs currentSong;
             while (ite.hasNext()) {
@@ -85,12 +90,16 @@ public class SongsService {
                 }
             }
         }
+        else {
+            artistCatorizedList=null;
+        }
         return artistCatorizedList;
     }
 
     public static List<Songs> songsByGenre(List<Songs> allSongs,String genre) {
-        List<Songs> genreCatorizedList =null;
+        List<Songs> genreCatorizedList;
         if(!allSongs.isEmpty() && genre!=null) {
+            genreCatorizedList=new ArrayList<>();
             Iterator<Songs> ite = allSongs.iterator();
             Songs currentSong;
             while (ite.hasNext()) {
@@ -99,6 +108,9 @@ public class SongsService {
                     genreCatorizedList.add(currentSong);
                 }
             }
+        }
+        else {
+            genreCatorizedList=null;
         }
         return genreCatorizedList;
     }
