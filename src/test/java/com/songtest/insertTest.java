@@ -1,15 +1,11 @@
 package com.songtest;
 
 import com.niit.jukebox.Service.SongsService;
-import com.niit.jukebox.methods.SongsMethods;
 import com.niit.jukebox.model.Songs;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class insertTest {
 
@@ -26,9 +22,18 @@ public class insertTest {
     }
 
     @Test
-    public void selectAllSuccess() {
+    public void insertSuccess() {
         try {
             Assert.assertTrue(SongsService.addSong(s1));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    @Test
+    public void insertfails() {
+        try {
+            Assert.assertFalse(SongsService.addSong(s1));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

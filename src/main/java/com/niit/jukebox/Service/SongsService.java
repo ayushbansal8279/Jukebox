@@ -1,7 +1,7 @@
 package com.niit.jukebox.Service;
 
 import com.niit.jukebox.methods.SongsConnection;
-import com.niit.jukebox.methods.SongsMethods;
+import com.niit.jukebox.methods.SongsDAO;
 import com.niit.jukebox.model.Songs;
 
 import java.sql.PreparedStatement;
@@ -29,18 +29,23 @@ public class SongsService {
             System.out.println("Song already available");
         }
         else {
-            res=SongsMethods.insertSong(song);
+            res= SongsDAO.insertSong(song);
             System.out.println("Song Successfully added");
         }
 
-        return (res==1?true:false);
+        return (res==1);
     }
 
     public  static void selectAll()throws Exception{
-        List<Songs> allSongs=SongsMethods.displayCatlog();
-        Iterator<Songs> ite= allSongs.iterator();
-        while (ite.hasNext()){
-            System.out.println(ite.next());
+        List<Songs> allSongs= SongsDAO.displayCatlog();
+        if(allSongs==null){
+            System.out.println("table is empty");
+        }
+        else {
+            Iterator<Songs> ite = allSongs.iterator();
+            while (ite.hasNext()) {
+                System.out.println(ite.next());
+            }
         }
     }
 }

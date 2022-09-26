@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SongsMethods {
+public class SongsDAO {
 
 
     public static int insertSong(Songs song) throws Exception {

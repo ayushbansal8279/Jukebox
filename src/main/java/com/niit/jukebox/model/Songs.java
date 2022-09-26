@@ -2,6 +2,7 @@ package com.niit.jukebox.model;
 
 public class Songs {
 
+    // attributes
     private int songId;
     private String songName;
     private String artist;
@@ -9,6 +10,7 @@ public class Songs {
     private String album;
     private float duration;
 
+    // constructor
     public Songs(){}
 
     public Songs(int songId, String songName, String artist, String genre, String album, float duration) {
@@ -28,6 +30,7 @@ public class Songs {
         this.duration = duration;
     }
 
+    // getters & setters
     public int getSongId() {
         return songId;
     }
@@ -76,6 +79,7 @@ public class Songs {
         this.duration = duration;
     }
 
+    // toString
     @Override
     public String toString() {
         return "Songs{" +

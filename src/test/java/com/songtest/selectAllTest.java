@@ -1,6 +1,6 @@
 package com.songtest;
 
-import com.niit.jukebox.methods.SongsMethods;
+import com.niit.jukebox.methods.SongsDAO;
 import com.niit.jukebox.model.Songs;
 import org.junit.After;
 import org.junit.Assert;
@@ -27,7 +27,7 @@ public class selectAllTest {
     @Test
     public void selectAllSuccess() {
         try {
-            songList = SongsMethods.displayCatlog();
+            songList = SongsDAO.displayCatlog();
             Assert.assertEquals(6, songList.size());
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -37,7 +37,7 @@ public class selectAllTest {
     @Test
     public void selectAllNotNull() {
         try {
-            songList = SongsMethods.displayCatlog();
+            songList = SongsDAO.displayCatlog();
             Assert.assertNotNull(songList);
         } catch (Exception e) {
             System.out.println(e.getMessage());
