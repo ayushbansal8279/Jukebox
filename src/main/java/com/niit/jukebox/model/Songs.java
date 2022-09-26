@@ -9,7 +9,7 @@ public class Songs {
     private String album;
     private float duration;
 
-    Songs(){}
+    public Songs(){}
 
     public Songs(int songId, String songName, String artist, String genre, String album, float duration) {
         this.songId = songId;

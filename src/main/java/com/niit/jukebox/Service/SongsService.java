@@ -23,7 +23,7 @@ public class SongsService {
         return flag;
     }
 
-    public static int addSong(Songs song) throws Exception {
+    public static boolean addSong(Songs song) throws Exception {
         int res = 0;
         if (isSongAvailable(song)) {
             System.out.println("Song already available");
@@ -32,7 +32,8 @@ public class SongsService {
             res=SongsMethods.insertSong(song);
             System.out.println("Song Successfully added");
         }
-        return res;
+
+        return (res==1?true:false);
     }
 
     public  static void selectAll()throws Exception{

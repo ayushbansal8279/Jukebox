@@ -7,8 +7,8 @@ import com.niit.jukebox.model.Songs;
 public class Main {
     public static void main(String[] args) {
         try {
-//            Songs s1=new Songs("dancing quee","b","c","d",2.3f);
-//            System.out.println(SongsService.addSong(s1));
+            Songs s1=new Songs("ancing que","b","c","d",2.3f);
+            System.out.println(SongsService.addSong(s1));
 
             SongsService.selectAll();
 
