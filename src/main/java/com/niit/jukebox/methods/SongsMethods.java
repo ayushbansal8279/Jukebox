@@ -10,22 +10,9 @@ import java.util.List;
 
 public class SongsMethods {
 
-    public static boolean isSongAvailable(String name) throws Exception {
-        boolean flag = false;
-        PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("Select name from songs where name=?");
-        selectStatement.setString(1, name);
-        ResultSet rs = selectStatement.executeQuery();
-        if (rs.next()) {
-            flag = true;
-        }
-        return flag;
-    }
 
-    public void insertSong(Songs song) throws Exception {
-        if (isSongAvailable(song.getSongName())) {
-            System.out.println("Song already available");
-        } else {
-            int res = 0;
+    public static int insertSong(Songs song) throws Exception {
+        int res=0;
             if (song.getSongId() != 0) {
                 PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songId,songName,artist,genre,album,duration) values(?,?,?,?,?,?);");
                 selectStatement.setInt(1, song.getSongId());
@@ -35,7 +22,8 @@ public class SongsMethods {
                 selectStatement.setString(5, song.getAlbum());
                 selectStatement.setFloat(6, song.getDuration());
                 res = selectStatement.executeUpdate();
-            } else {
+            }
+            else {
                 PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songName,artist,genre,album,duration) values(?,?,?,?,?);");
                 selectStatement.setString(1, song.getSongName());
                 selectStatement.setString(2, song.getArtist());
@@ -45,12 +33,10 @@ public class SongsMethods {
                 res = selectStatement.executeUpdate();
             }
 
-            String str = res == 1 ? "Song inserted successfully" : "Something went wrong";
-            System.out.println(str);
-        }
+        return res;
     }
 
-    public List<Songs> displayCatlog() throws Exception {
+    public static List<Songs> displayCatlog() throws Exception {
         List<Songs> allSongs = null;
         Statement selectStatement = SongsConnection.getSongsConnection().createStatement();
         ResultSet rs = selectStatement.executeQuery("select * from songs");
