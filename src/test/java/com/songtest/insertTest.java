@@ -30,7 +30,6 @@ public class insertTest {
         }
     }
 
-    @Test
     public void insertfails() {
         try {
             Assert.assertFalse(SongsService.addSong(s1));

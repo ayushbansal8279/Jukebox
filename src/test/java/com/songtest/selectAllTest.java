@@ -28,7 +28,7 @@ public class selectAllTest {
     public void selectAllSuccess() {
         try {
             songList = SongsDAO.displayCatlog();
-            Assert.assertEquals(6, songList.size());
+            Assert.assertEquals(7, songList.size());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
