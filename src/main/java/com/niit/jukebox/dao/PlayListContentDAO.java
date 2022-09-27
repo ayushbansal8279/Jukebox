@@ -14,8 +14,8 @@ public class PlayListContentDAO {
         return (selectStatement.executeUpdate()==1);
     }
 
-    public static List<Integer> viewSongsInAPlaylist(int playlistId) throws Exception{
-        List<Integer> songIdList=new ArrayList<>();
+    public static ArrayList<Integer> viewSongsInAPlaylist(int playlistId) throws Exception{
+        ArrayList<Integer> songIdList=new ArrayList<>();
         PreparedStatement selectStatement = JukeBoxConnection.getJukeBoxConnection().prepareStatement("Select songId from playlistContent where playlistId=?;");
         selectStatement.setInt(1,playlistId);
         ResultSet rs=selectStatement.executeQuery();

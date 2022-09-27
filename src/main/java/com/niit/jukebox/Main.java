@@ -1,11 +1,14 @@
 package com.niit.jukebox;
 
+import com.niit.jukebox.Service.PlaylistContentService;
+import com.niit.jukebox.Service.PlaylistService;
 import com.niit.jukebox.Service.SongsService;
 import com.niit.jukebox.dao.PlayListContentDAO;
 import com.niit.jukebox.dao.PlayListDAO;
 import com.niit.jukebox.dao.SongsDAO;
 import com.niit.jukebox.model.Songs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -34,7 +37,9 @@ public class Main {
 //            System.out.println(PlayListDAO.createPlayList("firstPlaylist"));
 //            System.out.println(PlayListDAO.viewPlaylist());
 //            System.out.println(PlayListContentDAO.addSongToAPlaylist(1,1));
-            System.out.println(PlayListContentDAO.viewSongsInAPlaylist(1));
+//            System.out.println(PlayListContentDAO.viewSongsInAPlaylist(1));
+//            System.out.println(PlaylistService.getAllPlaylist());
+            System.out.println(PlaylistContentService.playlistContent("firstPlaylist", PlaylistService.getAllPlaylist(), (ArrayList)SongsDAO.displayCatlog()));
         }
         catch (Exception e){
             System.out.println(e.getMessage());

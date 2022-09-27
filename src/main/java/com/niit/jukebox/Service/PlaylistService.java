@@ -15,8 +15,8 @@ public class PlaylistService {
         return res;
     }
 
-    Hashtable<String,Integer> getAllPlaylist() throws Exception{
+    public static Hashtable<String,Integer> getAllPlaylist() throws Exception{
         return PlayListDAO.viewPlaylist();
     }
-    
+
 }
