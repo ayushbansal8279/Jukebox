@@ -1,4 +1,4 @@
-package com.niit.jukebox.methods;
+package com.niit.jukebox.dao;
 
 import com.niit.jukebox.model.Songs;
 
@@ -14,7 +14,7 @@ public class SongsDAO {
     public static int insertSong(Songs song) throws Exception {
         int res=0;
             if (song.getSongId() != 0) {          // when Song is created with songId parameter constructor
-                PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songId,songName,artist,genre,album,duration) values(?,?,?,?,?,?);");
+                PreparedStatement selectStatement = JukeBoxConnection.getJukeBoxConnection().prepareStatement("insert into songs(songId,songName,artist,genre,album,duration) values(?,?,?,?,?,?);");
                 selectStatement.setInt(1, song.getSongId());
                 selectStatement.setString(2, song.getSongName());
                 selectStatement.setString(3, song.getArtist());
@@ -24,7 +24,7 @@ public class SongsDAO {
                 res = selectStatement.executeUpdate();
             }
             else {             // when Song is created without songId parameter constructor & songId will auto-generated
-                PreparedStatement selectStatement = SongsConnection.getSongsConnection().prepareStatement("insert into songs(songName,artist,genre,album,duration) values(?,?,?,?,?);");
+                PreparedStatement selectStatement = JukeBoxConnection.getJukeBoxConnection().prepareStatement("insert into songs(songName,artist,genre,album,duration) values(?,?,?,?,?);");
                 selectStatement.setString(1, song.getSongName());
                 selectStatement.setString(2, song.getArtist());
                 selectStatement.setString(3, song.getGenre());
@@ -38,7 +38,7 @@ public class SongsDAO {
 
     public static List<Songs> displayCatlog() throws Exception {
         List<Songs> allSongs = null;             // initializing a null arrayList
-        Statement selectStatement = SongsConnection.getSongsConnection().createStatement();
+        Statement selectStatement = JukeBoxConnection.getJukeBoxConnection().createStatement();
         ResultSet rs = selectStatement.executeQuery("select * from songs");
         if (rs.isBeforeFirst()) {
             allSongs = new ArrayList<>();

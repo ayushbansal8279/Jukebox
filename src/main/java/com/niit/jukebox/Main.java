@@ -1,10 +1,11 @@
 package com.niit.jukebox;
 
 import com.niit.jukebox.Service.SongsService;
-import com.niit.jukebox.methods.SongsDAO;
+import com.niit.jukebox.dao.PlayListContentDAO;
+import com.niit.jukebox.dao.PlayListDAO;
+import com.niit.jukebox.dao.SongsDAO;
 import com.niit.jukebox.model.Songs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -15,8 +16,8 @@ public class Main {
 //            System.out.println(SongsDAO.insertSong(s1));
 //            System.out.println(SongsService.addSong(s1));
 //            System.out.println(SongsDAO.displayCatlog());
-            List<Songs> list;
-            list= SongsDAO.displayCatlog();
+//            List<Songs> list;
+//            list= SongsDAO.displayCatlog();
 //            System.out.println(SongsService.getOneSong(list,"Dancing Queen"));
 //            System.out.println(SongsService.songsByAlbum(list,"sal"));
 //            System.out.println(SongsService.songsByArtist(list,"Big"));
@@ -28,7 +29,12 @@ public class Main {
 //            System.out.println(SongsService.addSong(s2));
 //            SongsService.selectAll(list);
 //            list= SongsDAO.displayCatlog();
-            SongsService.selectAll(list);
+//            SongsService.selectAll(list);
+
+//            System.out.println(PlayListDAO.createPlayList("firstPlaylist"));
+//            System.out.println(PlayListDAO.viewPlaylist());
+//            System.out.println(PlayListContentDAO.addSongToAPlaylist(1,1));
+            System.out.println(PlayListContentDAO.viewSongsInAPlaylist(1));
         }
         catch (Exception e){
             System.out.println(e.getMessage());

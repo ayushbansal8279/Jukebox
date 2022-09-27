@@ -1,11 +1,8 @@
 package com.niit.jukebox.Service;
 
-import com.niit.jukebox.methods.SongsConnection;
-import com.niit.jukebox.methods.SongsDAO;
+import com.niit.jukebox.dao.SongsDAO;
 import com.niit.jukebox.model.Songs;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.songtest;
 
-import com.niit.jukebox.methods.SongsDAO;
+import com.niit.jukebox.dao.SongsDAO;
 import com.niit.jukebox.model.Songs;
 import org.junit.After;
 import org.junit.Assert;
