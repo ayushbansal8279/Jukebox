@@ -75,9 +75,10 @@ public class PlaylistContentService {
             }
             for (int id: songIdList){
                 for(Songs song:songlist){
-                    if(song.getSongId()==id)
+                    if(song.getSongId()==id){
                         songListInPlaylist.add(song);
                     break;
+                    }
                 }
             }
         }
