@@ -37,6 +37,7 @@ public class SongsService {
 
     public  static void selectAll(List<Songs> songList)throws Exception{
         if(songList!=null) {
+            System.out.format("   %-25s%-20s%-20s%-20s%s   \n", "Song Name","Artist Name", "Genre", "Album","Duration");
             System.out.println("---------------------------------------------------------------------------------------------------");
             for (Songs s : songList) {
                 System.out.format("|  %-25s%-20s%-20s%-20s%f  |\n", s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
