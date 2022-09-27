@@ -1,6 +1,7 @@
 package com.niit.jukebox.Service;
 
 import com.niit.jukebox.dao.PlayListContentDAO;
+import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 
 import java.util.ArrayList;
@@ -14,23 +15,26 @@ public class PlaylistContentService {
         int playlistId=0;
         int songId=0;
         boolean res;
-        if(playlistName!=null && songName!= null){
-            playlistId=playlist.get(playlistName);
-            Iterator<Songs> ite=songList.iterator();
-            while (ite.hasNext()){
-                Songs song=ite.next();
-                if(song.getSongName().equals(songName)){
-                    songId=song.getSongId();
+        if(playlistName!=null && songName!= null) {
+            playlistId = playlist.get(playlistName);
+            Iterator<Songs> ite = songList.iterator();
+            while (ite.hasNext()) {
+                Songs song = ite.next();
+                if (song.getSongName().equals(songName)) {
+                    songId = song.getSongId();
                     break;
                 }
             }
+            if (songId == 0 || playlistId ==0) {
+                res = false;
+                throw new JukeException("no value found");
+            } else {
+                res = PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
+            }
         }
-            if(songId==0 || playlistId==0){
-                res=false;
-            }
-            else {
-                res= PlayListContentDAO.addSongToAPlaylist(playlistId,songId);
-            }
+        else {
+            throw new JukeException("Data is null.");
+        }
             return res;
     }
 
@@ -42,7 +46,7 @@ public class PlaylistContentService {
         if(playlistName!=null && albumName!= null){
             playlistId=playlist.get(playlistName);
             if(songList.isEmpty() || playlistId==0){
-                res=false;
+                throw new JukeException("no data found");
             }
             else {
 
@@ -61,6 +65,9 @@ public class PlaylistContentService {
             }
             res=true;
         }
+        else {
+            throw new JukeException("Data is null");
+        }
         return res;
     }
 
@@ -73,6 +80,9 @@ public class PlaylistContentService {
             if (playlistId!=0){
                 songIdList=PlayListContentDAO.viewSongsInAPlaylist(playlistId);
             }
+            else {
+                throw new JukeException("no such playlist found.");
+            }
             for (int id: songIdList){
                 for(Songs song:songlist){
                     if(song.getSongId()==id){
@@ -81,6 +91,9 @@ public class PlaylistContentService {
                     }
                 }
             }
+        }
+        else {
+            throw new JukeException("null value found");
         }
         return songListInPlaylist;
     }
