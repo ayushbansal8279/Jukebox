@@ -11,59 +11,76 @@ import java.util.List;
 
 public class PlaylistContentService {
 
-    public static boolean addSongToPlaylist(ArrayList<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String songName)throws Exception{
-        int playlistId=0;
-        int songId=0;
-        boolean res;
-        if(playlistName!=null && songName!= null) {
-            playlistId = playlist.get(playlistName);
-            Iterator<Songs> ite = songList.iterator();
-            while (ite.hasNext()) {
-                Songs song = ite.next();
-                if (song.getSongName().equals(songName)) {
-                    songId = song.getSongId();
-                    break;
-                }
-            }
-            if (songId == 0 || playlistId ==0) {
-                res = false;
-                throw new JukeException("no value found");
-            } else {
-                res = PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
+    public boolean isSongAvailableInPlaylist(String playlistName,String songName,Hashtable<String,Integer> playlist,List<Songs> songlist)throws Exception{
+        boolean res=false;
+        List<Songs> songInPlaylist=playlistContent(playlistName,playlist,songlist);
+        for(Songs song:songInPlaylist){
+            if(song.getSongName().equals(songName)){
+                res=true;
+                break;
             }
         }
+        return res;
+    }
+
+    public boolean addSongToPlaylist(List<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String songName)throws JukeException,Exception{
+        boolean res;
+        if(isSongAvailableInPlaylist(playlistName,songName,playlist,songList)){
+            throw new JukeException("Song already available in playlist");
+        }
         else {
-            throw new JukeException("Data is null.");
+            int playlistId = 0;
+            int songId = 0;
+            if (playlistName != null && songName != null) {
+
+                boolean songAvailable = false;
+                for (Songs currentSong : songList) {
+                    if (currentSong.getSongName().equals(songName)) {
+                        songId = currentSong.getSongId();
+                        songAvailable = true;
+                        break;
+                    }
+                }
+
+                if (!playlist.containsKey(playlistName) || !songAvailable) {
+                    throw new JukeException("Either song or playlist not available");
+                } else {
+                    playlistId = playlist.get(playlistName);
+                    res = PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
+                }
+            } else {
+                throw new JukeException("Data is null.");
+            }
         }
             return res;
     }
 
-    public static boolean addAlbumTOPlaylist(ArrayList<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String albumName)throws Exception{
-        int playlistId=0;
-        int songId=0;
+    public boolean addAlbumToPlaylist(List<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String albumName)throws Exception{
         boolean res=false;
-        ArrayList<Integer> songIdList =new ArrayList<>();
-        if(playlistName!=null && albumName!= null){
-            playlistId=playlist.get(playlistName);
-            if(songList.isEmpty() || playlistId==0){
-                throw new JukeException("no data found");
+        if (playlistName != null && albumName != null) {
+            if(playlist.containsKey(playlistName)) {
+                int playlistId=playlist.get(playlistName);
+                ArrayList<Integer> songIdList = new ArrayList<>();
+                Iterator<Songs> ite = songList.iterator();
+                while (ite.hasNext()) {
+                    Songs song = ite.next();
+                    if (song.getAlbum().equals(albumName)) {
+                        if (!isSongAvailableInPlaylist(playlistName, song.getSongName(), playlist, songList)) {
+                            songIdList.add(song.getSongId());
+                            }
+                        }
+                    }
+                Iterator<Integer> ite2 = songIdList.iterator();
+                int songId;
+                while (ite2.hasNext()) {
+                    songId = ite2.next();
+                    PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
+                }
+                res = true;
             }
             else {
-
-                Iterator<Songs> ite=songList.iterator();
-                while (ite.hasNext()){
-                    Songs song=ite.next();
-                    if(song.getAlbum().equals(albumName)){
-                        songIdList.add(song.getSongId());
-                    }
-                }
+                throw new JukeException("Playlist doesn't exist");
             }
-            Iterator<Integer> ite2=songIdList.iterator();
-            while (ite2.hasNext()){
-                songId= ite2.next();
-                PlayListContentDAO.addSongToAPlaylist(playlistId,songId);
-            }
-            res=true;
         }
         else {
             throw new JukeException("Data is null");
@@ -71,25 +88,25 @@ public class PlaylistContentService {
         return res;
     }
 
-    public static List<Songs> playlistContent(String playlistName,Hashtable<String,Integer> playlist,ArrayList<Songs> songlist)throws Exception{
+    public List<Songs> playlistContent(String playlistName,Hashtable<String,Integer> playlist,List<Songs> songlist)throws Exception{
         List<Songs> songListInPlaylist=new ArrayList();
         if(playlistName!=null){
+            if(playlist.containsKey(playlistName)){
             List<Integer> songIdList=new ArrayList<>();
-            int playlistId=0;
-            playlistId=playlist.get(playlistName);
-            if (playlistId!=0){
-                songIdList=PlayListContentDAO.viewSongsInAPlaylist(playlistId);
+            int playlistId=playlist.get(playlistName);
+            songIdList=PlayListContentDAO.viewSongsInAPlaylist(playlistId);
+
+                for (int id: songIdList){
+                    for(Songs song:songlist){
+                        if(song.getSongId()==id){
+                            songListInPlaylist.add(song);
+                            break;
+                        }
+                    }
+                }
             }
             else {
                 throw new JukeException("no such playlist found.");
-            }
-            for (int id: songIdList){
-                for(Songs song:songlist){
-                    if(song.getSongId()==id){
-                        songListInPlaylist.add(song);
-                    break;
-                    }
-                }
             }
         }
         else {
@@ -97,5 +114,4 @@ public class PlaylistContentService {
         }
         return songListInPlaylist;
     }
-
 }

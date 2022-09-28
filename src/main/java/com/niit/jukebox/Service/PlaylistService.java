@@ -4,23 +4,30 @@ import com.niit.jukebox.dao.PlayListDAO;
 import com.niit.jukebox.model.JukeException;
 
 import java.util.Hashtable;
+import java.util.Iterator;
 
 public class PlaylistService {
 
-    public static boolean addPlaylist(String playlistName, Hashtable<String,Integer> playlist) throws Exception{
+    public boolean isPlaylistAvailable(String playlistName,Hashtable<String,Integer> playlist){
         boolean res=false;
-        boolean isPlaylistPresent =playlist.containsKey(playlistName);
-        if(!isPlaylistPresent){
-            res=PlayListDAO.createPlayList(playlistName);
-        }
-        else {
-            throw new JukeException("playlist already exist.");
+        if(playlist.containsKey(playlistName)){
+            res=true;
         }
         return res;
     }
 
-    public static Hashtable<String,Integer> getAllPlaylist() throws Exception{
-        return PlayListDAO.viewPlaylist();
+    public boolean addPlaylist(String playlistName, Hashtable<String,Integer> playlist) throws JukeException,Exception{
+        boolean res=false;
+        if(isPlaylistAvailable(playlistName,playlist)){
+            throw new JukeException("playlist name already taken.");
+        }
+        else {
+                res = PlayListDAO.createPlayList(playlistName);
+        }
+        return res;
     }
 
+    public Hashtable<String,Integer> getAllPlaylist() throws Exception{
+        return PlayListDAO.viewPlaylist();
+    }
 }

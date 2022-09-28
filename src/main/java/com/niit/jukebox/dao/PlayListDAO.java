@@ -16,7 +16,7 @@ public class PlayListDAO {
         return (selectStatement.executeUpdate()==1);
     }
 
-    public static Hashtable viewPlaylist() throws Exception{
+    public static Hashtable<String,Integer> viewPlaylist() throws Exception{
         Hashtable<String,Integer> playlistTable=new Hashtable<>();
         Statement selectStatement = JukeBoxConnection.getJukeBoxConnection().createStatement();
         ResultSet rs=selectStatement.executeQuery("Select * from playlist;");
@@ -25,5 +25,4 @@ public class PlayListDAO {
         }
         return playlistTable;
     }
-
 }

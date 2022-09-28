@@ -21,8 +21,8 @@ public class Main {
 //            System.out.println(SongsDAO.insertSong(s1));
 //            System.out.println(SongsService.addSong(s1));
 //            System.out.println(SongsDAO.displayCatlog());
-            List<Songs> list;
-            list= SongsDAO.displayCatlog();
+//            List<Songs> list;
+//            list= SongsDAO.displayCatlog();
 //            System.out.println(SongsService.getOneSong(list,"Dancing Queen"));
 //            System.out.println(SongsService.songsByAlbum(list,"sal"));
 //            System.out.println(SongsService.songsByArtist(list,"Big"));
@@ -47,8 +47,9 @@ public class Main {
 //            System.out.println(PlaylistService.getAllPlaylist());
 //            System.out.println(playlist.containsKey("firstplaylist"));
 //            System.out.println(PlaylistContentService.addAlbumTOPlaylist((ArrayList<Songs>)list,PlaylistService.getAllPlaylist(),"firstplaylist","Abb"));
-            System.out.println(PlaylistContentService.playlistContent("firstplaylist",PlaylistService.getAllPlaylist(),(ArrayList)SongsDAO.displayCatlog()));
+//            System.out.println(PlaylistContentService.playlistContent("firstplaylist",PlaylistService.getAllPlaylist(),(ArrayList)SongsDAO.displayCatlog()));
 //            System.out.println((PlaylistService.getAllPlaylist().get("playlist")));
+//            System.out.println(PlaylistService.isPlaylistAvailable("playlist",PlaylistService.getAllPlaylist()));
             }
         catch (Exception e){
             System.out.println(e.getMessage());

@@ -1,6 +1,7 @@
 package com.niit.jukebox.Service;
 
 import com.niit.jukebox.dao.SongsDAO;
+import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 
 import java.util.ArrayList;
@@ -10,53 +11,72 @@ import java.util.List;
 public class SongsService {
 
     // to check whether a song is already present in catlog or not
-    public static boolean isSongAvailable(List<Songs> songList,Songs song) throws Exception {
-        String name=song.getSongName();
+    public boolean isSongAvailable(List<Songs> songList,Songs song) throws JukeException {
         boolean flag = false;
-        for (Songs currentSong:songList){
-            if(currentSong.getSongName().equals(name)){
-                flag=true;
-                break;
+        if(song==null){
+            throw new JukeException("Song is null.");
+        }
+        else {
+            String name = song.getSongName();
+            for (Songs currentSong : songList) {
+                if (currentSong.getSongName().equals(name)) {
+                    flag = true;
+                    break;
+                }
             }
         }
         return flag;
     }
 
     // to add a song in catlog
-    public static boolean addSong(Songs song) throws Exception {
-        int res=0;
-        List<Songs> songsList=SongsDAO.displayCatlog();
-        if (!isSongAvailable(songsList,song)) {
-            res=SongsDAO.insertSong(song);
+    public boolean addSong(Songs song,List<Songs>songsList) throws JukeException,Exception {
+        int res = 0;
+        if(song!=null) {
+            if (!isSongAvailable(songsList, song)) {
+                res = SongsDAO.insertSong(song);
+            }
+            else {
+                throw new JukeException("Song already available.");
+            }
+        }
+        else {
+            throw new JukeException("song is null.");
         }
         return (res==1);
     }
 
-    public  static void selectAll(List<Songs> songList)throws Exception{
+    public void selectAll(List<Songs> songList)throws JukeException{
         if(songList!=null) {
-            System.out.format("   %-25s%-20s%-20s%-20s%s   \n", "Song Name","Artist Name", "Genre", "Album","Duration");
-            System.out.println("---------------------------------------------------------------------------------------------------");
+            System.out.format("  %-10s%-25s%-20s%-20s%-20s%s   \n","Song Id","Song Name","Artist Name", "Genre", "Album","Duration");
+            System.out.println("-------------------------------------------------------------------------------------------------------------");
             for (Songs s : songList) {
-                System.out.format("|  %-25s%-20s%-20s%-20s%f  |\n", s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
-                System.out.println("---------------------------------------------------------------------------------------------------");
+                System.out.format("  %-10d%-25s%-20s%-20s%-20s%f  \n",s.getSongId(), s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
+                System.out.println("-------------------------------------------------------------------------------------------------------------");
             }
         }
     }
 
-    public static Songs getOneSong(List<Songs> allSongs,String songName)throws Exception{
+    public Songs getOneSong(List<Songs> allSongs,String songName)throws JukeException{
         Songs selectedSong=null;
-        if(!allSongs.isEmpty() && songName!=null) {
-            Iterator<Songs> ite = allSongs.iterator();
-            for (Songs song : allSongs) {
-                if (song.getSongName().equals(songName)) {
-                    selectedSong = new Songs(song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
+        if(songName==null){
+            throw new JukeException("Song name is null.");
+        }
+        else {
+                for (Songs song : allSongs) {
+                    if (song.getSongName().equals(songName)) {
+                        selectedSong = new Songs(song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
+                    }
                 }
             }
-        }
         return selectedSong;
     }
 
-    public static List<Songs> songsByAlbum(List<Songs> allSongs,String albumName) {
+    public List<Songs> getAllSongs()throws Exception{
+        List<Songs> allSongsList=SongsDAO.displayCatlog();
+        return allSongsList;
+    }
+
+    public List<Songs> songsByAlbum(List<Songs> allSongs,String albumName) throws JukeException{
         List<Songs> albumCatorizedList;
         if(!allSongs.isEmpty() && albumName!=null) {
             albumCatorizedList=new ArrayList<>();
@@ -70,12 +90,12 @@ public class SongsService {
             }
         }
         else {
-            albumCatorizedList=null;
+            throw new JukeException("song list is empty or album name is null.");
         }
         return albumCatorizedList;
     }
 
-    public static List<Songs> songsByArtist(List<Songs> allSongs,String artistName) {
+    public List<Songs> songsByArtist(List<Songs> allSongs,String artistName) throws JukeException{
         List<Songs> artistCatorizedList;
         if(!allSongs.isEmpty() && artistName!=null) {
             artistCatorizedList=new ArrayList<>();
@@ -89,12 +109,12 @@ public class SongsService {
             }
         }
         else {
-            artistCatorizedList=null;
+            throw new JukeException("artist is null");
         }
         return artistCatorizedList;
     }
 
-    public static List<Songs> songsByGenre(List<Songs> allSongs,String genre) {
+    public List<Songs> songsByGenre(List<Songs> allSongs,String genre)throws JukeException {
         List<Songs> genreCatorizedList;
         if(!allSongs.isEmpty() && genre!=null) {
             genreCatorizedList=new ArrayList<>();
@@ -108,7 +128,7 @@ public class SongsService {
             }
         }
         else {
-            genreCatorizedList=null;
+            throw new JukeException("genre is null");
         }
         return genreCatorizedList;
     }

@@ -1,5 +1,6 @@
 package com.niit.jukebox.dao;
 
+import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 
 import java.sql.PreparedStatement;
