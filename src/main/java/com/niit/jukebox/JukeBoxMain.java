@@ -85,6 +85,8 @@ public class JukeBoxMain {
                             }
                             case 7:
                                 System.exit(0);
+                            default:
+                                System.out.println("Wrong input");
                         }
                         break;
                     }
@@ -135,6 +137,9 @@ public class JukeBoxMain {
                                 if(playlistContentService.addAlbumToPlaylist(allSongsList,allPlaylist,playlistName,albumName)){
                                     System.out.println("Album added successfully");
                                 }
+                                else {
+                                    System.out.println("Something gone wrong!");
+                                }
                                 break;
                             }
                             case 5: {
@@ -151,15 +156,21 @@ public class JukeBoxMain {
                             case 7: {
                                 System.exit(0);
                             }
+                            default:
+                                System.out.println("Wrong input");
                         }
                         break;
                     }
+
                     case 3: {
                         break;
                     }
+
                     case 4: {
                         System.exit(0);
                     }
+                    default:
+                        System.out.println("Wrong input");
                 }
             }
         }

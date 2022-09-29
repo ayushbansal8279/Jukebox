@@ -10,7 +10,7 @@ public class PlaylistService {
 
     public boolean isPlaylistAvailable(String playlistName,Hashtable<String,Integer> playlist){
         boolean res=false;
-        if(playlist.containsKey(playlistName)){
+        if(playlist.containsKey(playlistName.toLowerCase())){
             res=true;
         }
         return res;
@@ -22,7 +22,7 @@ public class PlaylistService {
             throw new JukeException("playlist name already taken.");
         }
         else {
-                res = PlayListDAO.createPlayList(playlistName);
+                res = PlayListDAO.createPlayList(playlistName.toLowerCase());
         }
         return res;
     }

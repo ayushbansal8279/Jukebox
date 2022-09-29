@@ -19,7 +19,7 @@ public class SongsService {
         else {
             String name = song.getSongName();
             for (Songs currentSong : songList) {
-                if (currentSong.getSongName().equals(name)) {
+                if (currentSong.getSongName().equalsIgnoreCase(name)) {
                     flag = true;
                     break;
                 }
@@ -47,11 +47,11 @@ public class SongsService {
 
     public void selectAll(List<Songs> songList)throws JukeException{
         if(songList!=null) {
-            System.out.format("  %-10s%-25s%-20s%-20s%-20s%s   \n","Song Id","Song Name","Artist Name", "Genre", "Album","Duration");
-            System.out.println("-------------------------------------------------------------------------------------------------------------");
+            System.out.format("  %-25s%-20s%-20s%-20s%s   \n","Song Name","Artist Name", "Genre", "Album","Duration");
+            System.out.println("---------------------------------------------------------------------------------------------------");
             for (Songs s : songList) {
-                System.out.format("  %-10d%-25s%-20s%-20s%-20s%f  \n",s.getSongId(), s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
-                System.out.println("-------------------------------------------------------------------------------------------------------------");
+                System.out.format(" %-25s%-20s%-20s%-20s%f  \n",s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
+                System.out.println("---------------------------------------------------------------------------------------------------");
             }
         }
     }
@@ -63,11 +63,14 @@ public class SongsService {
         }
         else {
                 for (Songs song : allSongs) {
-                    if (song.getSongName().equals(songName)) {
+                    if (song.getSongName().equalsIgnoreCase(songName)) {
                         selectedSong = new Songs(song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
                     }
                 }
-            }
+                    if(selectedSong==null){
+                        throw new JukeException("no such song available.");
+                    }
+                }
         return selectedSong;
     }
 
@@ -84,9 +87,12 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getAlbum().equals(albumName)) {
+                if (currentSong.getAlbum().equalsIgnoreCase(albumName)) {
                     albumCatorizedList.add(currentSong);
                 }
+            }
+            if(albumCatorizedList.size()==0){
+                throw new JukeException("no song available for this category.");
             }
         }
         else {
@@ -103,9 +109,12 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getArtist().contains(artistName)) {
+                if (currentSong.getArtist().toUpperCase().contains(artistName.toUpperCase())) {
                     artistCatorizedList.add(currentSong);
                 }
+            }
+            if(artistCatorizedList.size()==0){
+                throw new JukeException("no song available for this category.");
             }
         }
         else {
@@ -122,9 +131,12 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getGenre().equals(genre)) {
+                if (currentSong.getGenre().equalsIgnoreCase(genre)) {
                     genreCatorizedList.add(currentSong);
                 }
+            }
+            if(genreCatorizedList.size()==0){
+                throw new JukeException("no song available for this category.");
             }
         }
         else {

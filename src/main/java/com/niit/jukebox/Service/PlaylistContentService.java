@@ -15,7 +15,7 @@ public class PlaylistContentService {
         boolean res=false;
         List<Songs> songInPlaylist=playlistContent(playlistName,playlist,songlist);
         for(Songs song:songInPlaylist){
-            if(song.getSongName().equals(songName)){
+            if(song.getSongName().equalsIgnoreCase(songName)){
                 res=true;
                 break;
             }
@@ -29,23 +29,22 @@ public class PlaylistContentService {
             throw new JukeException("Song already available in playlist");
         }
         else {
-            int playlistId = 0;
-            int songId = 0;
+            int songId =0;
             if (playlistName != null && songName != null) {
 
                 boolean songAvailable = false;
                 for (Songs currentSong : songList) {
-                    if (currentSong.getSongName().equals(songName)) {
+                    if (currentSong.getSongName().equalsIgnoreCase(songName)) {
                         songId = currentSong.getSongId();
                         songAvailable = true;
                         break;
                     }
                 }
 
-                if (!playlist.containsKey(playlistName) || !songAvailable) {
-                    throw new JukeException("Either song or playlist not available");
+                if (!songAvailable) {
+                    throw new JukeException("This song not available");
                 } else {
-                    playlistId = playlist.get(playlistName);
+                    int playlistId = playlist.get(playlistName);
                     res = PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
                 }
             } else {
@@ -58,25 +57,32 @@ public class PlaylistContentService {
     public boolean addAlbumToPlaylist(List<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String albumName)throws Exception{
         boolean res=false;
         if (playlistName != null && albumName != null) {
-            if(playlist.containsKey(playlistName)) {
+            if(playlist.containsKey(playlistName.toLowerCase())) {
                 int playlistId=playlist.get(playlistName);
-                ArrayList<Integer> songIdList = new ArrayList<>();
+
+                ArrayList<Songs> songAlbumList = new ArrayList<>();
                 Iterator<Songs> ite = songList.iterator();
                 while (ite.hasNext()) {
                     Songs song = ite.next();
-                    if (song.getAlbum().equals(albumName)) {
-                        if (!isSongAvailableInPlaylist(playlistName, song.getSongName(), playlist, songList)) {
-                            songIdList.add(song.getSongId());
-                            }
+                    if (song.getAlbum().equalsIgnoreCase(albumName)) {
+                            songAlbumList.add(song);
                         }
                     }
-                Iterator<Integer> ite2 = songIdList.iterator();
-                int songId;
-                while (ite2.hasNext()) {
-                    songId = ite2.next();
-                    PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
+
+                if(songAlbumList.size()==0){
+                    throw new JukeException("Album not found");
                 }
-                res = true;
+                else {
+                    Iterator<Songs> ite2 = songAlbumList.iterator();
+                    Songs songs;
+                    while (ite2.hasNext()) {
+                        songs = ite2.next();
+                        if (!isSongAvailableInPlaylist(playlistName, songs.getSongName(), playlist, songList)) {
+                            PlayListContentDAO.addSongToAPlaylist(playlistId, songs.getSongId());
+                        }
+                    }
+                    res = true;
+                }
             }
             else {
                 throw new JukeException("Playlist doesn't exist");
@@ -91,7 +97,7 @@ public class PlaylistContentService {
     public List<Songs> playlistContent(String playlistName,Hashtable<String,Integer> playlist,List<Songs> songlist)throws Exception{
         List<Songs> songListInPlaylist=new ArrayList();
         if(playlistName!=null){
-            if(playlist.containsKey(playlistName)){
+            if(playlist.containsKey(playlistName.toLowerCase())){
             List<Integer> songIdList=new ArrayList<>();
             int playlistId=playlist.get(playlistName);
             songIdList=PlayListContentDAO.viewSongsInAPlaylist(playlistId);
