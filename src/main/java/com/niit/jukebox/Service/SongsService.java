@@ -47,12 +47,13 @@ public class SongsService {
 
     public void selectAll(List<Songs> songList)throws JukeException{
         if(songList!=null) {
-            System.out.format("  %-25s%-20s%-20s%-20s%s   \n","Song Name","Artist Name", "Genre", "Album","Duration");
+            System.out.format("  %-25s%-25s%-20s%-20s%s   \n","Song Name","Artist Name", "Genre", "Album","Duration");
             System.out.println("---------------------------------------------------------------------------------------------------");
             for (Songs s : songList) {
-                System.out.format(" %-25s%-20s%-20s%-20s%f  \n",s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
-                System.out.println("---------------------------------------------------------------------------------------------------");
+                System.out.format(" %-25s%-25s%-20s%-20s%f  \n",s.getSongName(), s.getArtist(), s.getGenre(), s.getAlbum(), s.getDuration());
             }
+            System.out.println("---------------------------------------------------------------------------------------------------");
+
         }
     }
 

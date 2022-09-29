@@ -10,6 +10,7 @@ import java.util.*;
 public class JukeBoxMain {
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
+        System.out.println("\n\t\t\t\t\t\t\t\t---*---WELCOME TO JUKEBOX---*---\n");
         try {
             SongsService songsService = new SongsService();
             PlaylistService playlistService = new PlaylistService();
@@ -107,11 +108,13 @@ public class JukeBoxMain {
                                 choice2 = sc.nextInt();
                                 switch (choice2) {
                                     case 1: {
+                                        System.out.println("-------------");
                                         Set<String> playlist = allPlaylist.keySet();
                                         Iterator<String> ite = playlist.iterator();
                                         while (ite.hasNext()) {
                                             System.out.println(ite.next());
                                         }
+                                        System.out.println("-------------");
                                         break;
                                     }
                                     case 2: {
