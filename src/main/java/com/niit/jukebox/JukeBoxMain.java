@@ -108,6 +108,10 @@ public class JukeBoxMain {
                                 choice2 = sc.nextInt();
                                 switch (choice2) {
                                     case 1: {
+                                        if(allPlaylist.size()==0){
+                                            System.out.println("no playlist available");
+                                        }
+                                        else {
                                         System.out.println("-------------");
                                         Set<String> playlist = allPlaylist.keySet();
                                         Iterator<String> ite = playlist.iterator();
@@ -115,6 +119,7 @@ public class JukeBoxMain {
                                             System.out.println(ite.next());
                                         }
                                         System.out.println("-------------");
+                                        }
                                         break;
                                     }
                                     case 2: {
