@@ -1,12 +1,9 @@
-package com.niit.jukebox.dao;
-
-import com.mysql.cj.xdevapi.SelectStatement;
+package com.niit.jukebox.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Hashtable;
-import java.util.List;
 
 public class PlayListDAO {
 

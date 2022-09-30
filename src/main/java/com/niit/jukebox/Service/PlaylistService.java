@@ -1,10 +1,9 @@
 package com.niit.jukebox.Service;
 
-import com.niit.jukebox.dao.PlayListDAO;
+import com.niit.jukebox.DAO.PlayListDAO;
 import com.niit.jukebox.model.JukeException;
 
 import java.util.Hashtable;
-import java.util.Iterator;
 
 public class PlaylistService {
 

@@ -1,4 +1,4 @@
-package com.niit.jukebox.dao;
+package com.niit.jukebox.DAO;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

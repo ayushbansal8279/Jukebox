@@ -1,10 +1,13 @@
 package com.niit.jukebox;
 
+import com.niit.jukebox.Service.PlayerService;
 import com.niit.jukebox.Service.PlaylistContentService;
 import com.niit.jukebox.Service.PlaylistService;
 import com.niit.jukebox.Service.SongsService;
+import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 
+import javax.sound.sampled.Clip;
 import java.util.*;
 
 public class JukeBoxMain {
@@ -15,6 +18,7 @@ public class JukeBoxMain {
             SongsService songsService = new SongsService();
             PlaylistService playlistService = new PlaylistService();
             PlaylistContentService playlistContentService = new PlaylistContentService();
+            PlayerService playerService=new PlayerService();
 
             List<Songs> allSongsList;
             Hashtable<String, Integer> allPlaylist;
@@ -96,6 +100,15 @@ public class JukeBoxMain {
                             catch (Exception e){
                                 System.out.println(e.getMessage());
                             }
+                            if(choice2!=6) {
+                                System.out.println("press\n\t0 to exit\n\t1 to continue\n\t2 for main menu");
+                                int choice3 = sc.nextInt();
+                                if (choice3 == 2) {
+                                    break;
+                                } else if (choice3 != 1) {
+                                    System.exit(0);
+                                }
+                            }
                         }
                         break;
                     }
@@ -108,17 +121,16 @@ public class JukeBoxMain {
                                 choice2 = sc.nextInt();
                                 switch (choice2) {
                                     case 1: {
-                                        if(allPlaylist.size()==0){
+                                        if (allPlaylist.size() == 0) {
                                             System.out.println("no playlist available");
-                                        }
-                                        else {
-                                        System.out.println("-------------");
-                                        Set<String> playlist = allPlaylist.keySet();
-                                        Iterator<String> ite = playlist.iterator();
-                                        while (ite.hasNext()) {
-                                            System.out.println(ite.next());
-                                        }
-                                        System.out.println("-------------");
+                                        } else {
+                                            System.out.println("-------------");
+                                            Set<String> playlist = allPlaylist.keySet();
+                                            Iterator<String> ite = playlist.iterator();
+                                            while (ite.hasNext()) {
+                                                System.out.println(ite.next());
+                                            }
+                                            System.out.println("-------------");
                                         }
                                         break;
                                     }
@@ -177,15 +189,96 @@ public class JukeBoxMain {
                                     default:
                                         System.out.println("Wrong input");
                                 }
-                            }
-                            catch (Exception e){
+                            } catch (Exception e) {
                                 System.out.println(e.getMessage());
+                            }
+                            if (choice2 != 6) {
+                                System.out.println("press\n\t0 to exit\n\t1 to continue\n\t2 for main menu");
+                                int choice3 = sc.nextInt();
+                                if (choice3 == 2) {
+                                    break;
+                                } else if (choice3 != 1) {
+                                    System.exit(0);
+                                }
                             }
                         }
                         break;
                     }
 
                     case 3: {
+                        System.out.println("Enter \n\t1-to play a song.\n\t2-to play a playlist\n\t3-back\n\t4-exit.");
+                        int choice2= sc.nextInt();
+                        switch (choice2) {
+                            case 1: {
+                                System.out.println("Enter song name");
+                                sc.nextLine();
+                                String songName = sc.nextLine();
+                                Songs song = songsService.getOneSong(allSongsList, songName);
+                                if (!songsService.isSongAvailable(allSongsList, song)) {
+                                    throw new JukeException("Song not present");
+                                } else {
+                                    int songid = song.getSongId();
+                                    System.out.println("Now playing- " + song.getSongName() + "...");
+                                    Clip clip = playerService.getClip(songid);
+                                    playerService.playSong(clip);
+                                    System.out.println("Enter\n\t1-Stop song");
+                                    int choice3 = sc.nextInt();
+                                    switch (choice3) {
+                                        case 1: {
+                                            playerService.stopSong(clip);
+                                            break;
+                                        }
+                                        case 2: {
+                                            sc.nextLine();
+                                            sc.nextLine();
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            case 2:{
+                                System.out.println("Enter playlist name");
+                                sc.nextLine();
+                                String playlistName = sc.nextLine();
+                                List<Songs> songsInPlaylist=playlistContentService.playlistContent(playlistName,allPlaylist,allSongsList);
+                                int songid;
+                                for(Songs song:songsInPlaylist){
+                                    songid = song.getSongId();
+                                    System.out.println("Now playing- " + song.getSongName() + "...");
+                                    Clip clip = playerService.getClip(songid);
+                                    playerService.playSong(clip);
+                                    System.out.println("Enter\n\t1-Stop song\n\t2-Pause\n\t3-Play next\n\t4-Back");
+                                    int choice3 = sc.nextInt();
+                                    switch (choice3) {
+                                        case 1: {
+                                            playerService.stopSong(clip);
+                                            break;
+                                        }
+                                        case 2: {
+                                            sc.nextLine();
+                                            sc.nextLine();
+                                        }
+                                        case 3:{
+
+                                        }
+                                        case 4:{
+                                            playerService.stopSong(clip);
+                                           break;
+                                        }
+                                    }
+                                    if(choice3==1){
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                            case 3:{
+                                break;
+                            }
+                            case 4:{
+                                System.exit(0);
+                            }
+                        }
                         break;
                     }
 

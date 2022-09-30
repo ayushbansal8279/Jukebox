@@ -1,9 +1,8 @@
-package com.niit.jukebox.dao;
+package com.niit.jukebox.DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 public class PlayListContentDAO {
 

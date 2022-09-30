@@ -1,6 +1,6 @@
 package com.niit.jukebox.Service;
 
-import com.niit.jukebox.dao.SongsDAO;
+import com.niit.jukebox.DAO.SongsDAO;
 import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 
@@ -65,7 +65,7 @@ public class SongsService {
         else {
                 for (Songs song : allSongs) {
                     if (song.getSongName().equalsIgnoreCase(songName)) {
-                        selectedSong = new Songs(song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
+                        selectedSong = new Songs(song.getSongId(),song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
                     }
                 }
                     if(selectedSong==null){
