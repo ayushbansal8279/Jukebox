@@ -1,6 +1,6 @@
 package com.niit.jukebox.Service;
 
-import com.niit.jukebox.DAO.SongsDAO;
+import com.niit.jukebox.dao.SongsDAO;
 import com.niit.jukebox.model.JukeException;
 import com.niit.jukebox.model.Songs;
 

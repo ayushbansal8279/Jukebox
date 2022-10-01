@@ -1,4 +1,4 @@
-package com.niit.jukebox.DAO;
+package com.niit.jukebox.dao;
 
 import com.niit.jukebox.model.Songs;
 
