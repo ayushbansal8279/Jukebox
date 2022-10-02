@@ -206,32 +206,77 @@ public class JukeBoxMain {
                     }
 
                     case 3: {
-                        System.out.println("Enter \n\t1-to play a song.\n\t2-to play a playlist\n\t3-back\n\t4-exit.");
-                        int choice2 = sc.nextInt();
-                        switch (choice2) {
-                            case 1: {
-                                int choice3;
-                                do {
-                                    System.out.println("Enter song name");
+                        try {
+                            System.out.println("Enter \n\t1-to play a song.\n\t2-to play a playlist\n\t3-back\n\t4-exit.");
+                            int choice2 = sc.nextInt();
+                            switch (choice2) {
+                                case 1: {
+                                    int choice3;
+                                    do {
+                                        System.out.println("Enter song name");
+                                        sc.nextLine();
+                                        String songName = sc.nextLine();
+                                        Songs song = songsService.getOneSong(allSongsList, songName);
+                                        if (!songsService.isSongAvailable(allSongsList, song)) {
+                                            throw new JukeException("Song not present");
+                                        } else {
+                                            int songid = song.getSongId();
+                                            System.out.println("Now playing- " + song.getSongName() + "...");
+                                            Player player = new Player(songid);
+                                            playerService.playSong(player);
+                                            int choice4 = 0;
+                                            do {
+                                                System.out.println("Enter\n\t1-Stop\n\t2-Pause\n\t3-play another song");
+                                                choice3 = sc.nextInt();
+                                                switch (choice3) {
+                                                    case 1:
+                                                    case 3: {
+                                                        playerService.stopSong(player);
+                                                        choice4 = 0;
+                                                        break;
+                                                    }
+                                                    case 2: {
+                                                        playerService.pauseSong(player);
+                                                        System.out.println("enter \n\t1-to resume\n\t2-to get back");
+                                                        choice4 = sc.nextInt();
+                                                        if (choice4 == 1) {
+                                                            playerService.resumeSong(player);
+                                                            break;
+                                                        } else {
+                                                            playerService.stopSong(player);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            while (choice4 == 1);
+                                        }
+                                    }
+                                    while (choice3 == 3);
+
+                                    break;
+                                }
+                                case 2: {
+                                    System.out.println("Enter playlist name");
                                     sc.nextLine();
-                                    String songName = sc.nextLine();
-                                    Songs song = songsService.getOneSong(allSongsList, songName);
-                                    if (!songsService.isSongAvailable(allSongsList, song)) {
-                                        throw new JukeException("Song not present");
-                                    } else {
-                                        int songid = song.getSongId();
+                                    String playlistName = sc.nextLine();
+                                    List<Songs> songsInPlaylist = playlistContentService.playlistContent(playlistName, allPlaylist, allSongsList);
+                                    int songid;
+                                    for (Songs song : songsInPlaylist) {
+                                        songid = song.getSongId();
                                         System.out.println("Now playing- " + song.getSongName() + "...");
                                         Player player = new Player(songid);
                                         playerService.playSong(player);
-                                        int choice4=0;
+                                        int choice4 = 0;
+                                        int choice3;
                                         do {
-                                            System.out.println("Enter\n\t1-Stop\n\t2-Pause\n\t3-play another song");
+                                            System.out.println("Enter\n\t1-Stop song\n\t2-Pause\n\t3-Play next");
                                             choice3 = sc.nextInt();
                                             switch (choice3) {
                                                 case 1:
                                                 case 3: {
                                                     playerService.stopSong(player);
-                                                    choice4=0;
+                                                    choice4 = 0;
                                                     break;
                                                 }
                                                 case 2: {
@@ -249,62 +294,22 @@ public class JukeBoxMain {
                                             }
                                         }
                                         while (choice4 == 1);
-                                    }
-                                }
-                                while (choice3==3);
-
-                                break;
-                            }
-                            case 2: {
-                                System.out.println("Enter playlist name");
-                                sc.nextLine();
-                                String playlistName = sc.nextLine();
-                                List<Songs> songsInPlaylist = playlistContentService.playlistContent(playlistName, allPlaylist, allSongsList);
-                                int songid;
-                                for (Songs song : songsInPlaylist) {
-                                    songid = song.getSongId();
-                                    System.out.println("Now playing- " + song.getSongName() + "...");
-                                    Player player = new Player(songid);
-                                    playerService.playSong(player);
-                                    int choice4=0;
-                                    int choice3;
-                                    do {
-                                        System.out.println("Enter\n\t1-Stop song\n\t2-Pause\n\t3-Play next");
-                                        choice3 = sc.nextInt();
-                                        switch (choice3) {
-                                            case 1:
-                                            case 3: {
-                                                playerService.stopSong(player);
-                                                choice4=0;
-                                                break;
-                                            }
-                                            case 2: {
-                                                playerService.pauseSong(player);
-                                                System.out.println("enter \n\t1-to resume\n\t2-to get back");
-                                                choice4 = sc.nextInt();
-                                                if (choice4 == 1) {
-                                                    playerService.resumeSong(player);
-                                                    break;
-                                                } else {
-                                                    playerService.stopSong(player);
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    while (choice4==1);
-                                        if (choice3==1) {
+                                        if (choice3 == 1) {
                                             break;
                                         }
                                     }
                                     break;
                                 }
-                            case 3: {
-                                break;
+                                case 3: {
+                                    break;
+                                }
+                                case 4: {
+                                    System.exit(0);
+                                }
                             }
-                            case 4: {
-                                System.exit(0);
-                            }
+                        }
+                        catch (Exception e){
+                            System.out.println(e.getMessage());
                         }
                         break;
                     }

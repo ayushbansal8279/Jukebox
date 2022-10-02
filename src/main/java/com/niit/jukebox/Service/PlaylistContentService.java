@@ -15,7 +15,7 @@ public class PlaylistContentService {
         boolean res=false;
         List<Songs> songInPlaylist=playlistContent(playlistName,playlist,songlist);
         for(Songs song:songInPlaylist){
-            if(song.getSongName().equalsIgnoreCase(songName)){
+            if(song.getSongName().equalsIgnoreCase(songName.trim())){
                 res=true;
                 break;
             }
@@ -34,7 +34,7 @@ public class PlaylistContentService {
 
                 boolean songAvailable = false;
                 for (Songs currentSong : songList) {
-                    if (currentSong.getSongName().equalsIgnoreCase(songName)) {
+                    if (currentSong.getSongName().equalsIgnoreCase(songName.trim())) {
                         songId = currentSong.getSongId();
                         songAvailable = true;
                         break;
@@ -42,9 +42,9 @@ public class PlaylistContentService {
                 }
 
                 if (!songAvailable) {
-                    throw new JukeException("This song not available");
+                    throw new JukeException("This song is not available");
                 } else {
-                    int playlistId = playlist.get(playlistName);
+                    int playlistId = playlist.get(playlistName.toLowerCase().trim());
                     res = PlayListContentDAO.addSongToAPlaylist(playlistId, songId);
                 }
             } else {
@@ -57,14 +57,14 @@ public class PlaylistContentService {
     public boolean addAlbumToPlaylist(List<Songs> songList, Hashtable<String,Integer> playlist,String playlistName,String albumName)throws Exception{
         boolean res=false;
         if (playlistName != null && albumName != null) {
-            if(playlist.containsKey(playlistName.toLowerCase())) {
-                int playlistId=playlist.get(playlistName);
+            if(playlist.containsKey(playlistName.toLowerCase().trim())) {
+                int playlistId=playlist.get(playlistName.toLowerCase().trim());
 
                 ArrayList<Songs> songAlbumList = new ArrayList<>();
                 Iterator<Songs> ite = songList.iterator();
                 while (ite.hasNext()) {
                     Songs song = ite.next();
-                    if (song.getAlbum().equalsIgnoreCase(albumName)) {
+                    if (song.getAlbum().equalsIgnoreCase(albumName.trim())) {
                             songAlbumList.add(song);
                         }
                     }
@@ -97,9 +97,9 @@ public class PlaylistContentService {
     public List<Songs> playlistContent(String playlistName,Hashtable<String,Integer> playlist,List<Songs> songlist)throws Exception{
         List<Songs> songListInPlaylist=new ArrayList();
         if(playlistName!=null){
-            if(playlist.containsKey(playlistName.toLowerCase())){
+            if(playlist.containsKey(playlistName.toLowerCase().trim())){
             List<Integer> songIdList=new ArrayList<>();
-            int playlistId=playlist.get(playlistName);
+            int playlistId=playlist.get(playlistName.trim());
             songIdList=PlayListContentDAO.viewSongsInAPlaylist(playlistId);
 
                 for (int id: songIdList){

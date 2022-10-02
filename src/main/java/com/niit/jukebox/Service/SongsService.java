@@ -19,7 +19,7 @@ public class SongsService {
         else {
             String name = song.getSongName();
             for (Songs currentSong : songList) {
-                if (currentSong.getSongName().equalsIgnoreCase(name)) {
+                if (currentSong.getSongName().equalsIgnoreCase(name.trim())) {
                     flag = true;
                     break;
                 }
@@ -64,7 +64,7 @@ public class SongsService {
         }
         else {
                 for (Songs song : allSongs) {
-                    if (song.getSongName().equalsIgnoreCase(songName)) {
+                    if (song.getSongName().equalsIgnoreCase(songName.trim())) {
                         selectedSong = new Songs(song.getSongId(),song.getSongName(), song.getArtist(), song.getGenre(), song.getAlbum(), song.getDuration());
                     }
                 }
@@ -88,7 +88,7 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getAlbum().equalsIgnoreCase(albumName)) {
+                if (currentSong.getAlbum().trim().equalsIgnoreCase(albumName.trim())) {
                     albumCatorizedList.add(currentSong);
                 }
             }
@@ -110,7 +110,7 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getArtist().toUpperCase().contains(artistName.toUpperCase())) {
+                if (currentSong.getArtist().toUpperCase().trim().contains(artistName.toUpperCase().trim())) {
                     artistCatorizedList.add(currentSong);
                 }
             }
@@ -132,7 +132,7 @@ public class SongsService {
             Songs currentSong;
             while (ite.hasNext()) {
                 currentSong = ite.next();
-                if (currentSong.getGenre().equalsIgnoreCase(genre)) {
+                if (currentSong.getGenre().trim().equalsIgnoreCase(genre.trim())) {
                     genreCatorizedList.add(currentSong);
                 }
             }

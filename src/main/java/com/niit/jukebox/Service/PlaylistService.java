@@ -9,7 +9,7 @@ public class PlaylistService {
 
     public boolean isPlaylistAvailable(String playlistName,Hashtable<String,Integer> playlist){
         boolean res=false;
-        if(playlist.containsKey(playlistName.toLowerCase())){
+        if(playlist.containsKey(playlistName.toLowerCase().trim())){
             res=true;
         }
         return res;
