@@ -9,6 +9,7 @@ import com.niit.jukebox.model.Player;
 import com.niit.jukebox.model.Songs;
 
 import javax.sound.sampled.Clip;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class JukeBoxMain {
@@ -193,7 +194,9 @@ public class JukeBoxMain {
                                     default:
                                         System.out.println("Wrong input");
                                 }
-                            } catch (Exception e) {
+                            }catch (InputMismatchException e) {
+                                System.out.println(e.getMessage()); }
+                            catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
                             if (choice2 != 6) {
@@ -312,6 +315,9 @@ public class JukeBoxMain {
                                 }
                             }
                         }
+                        catch (FileNotFoundException e){
+                            System.out.println("this file is not available");
+                        }
                         catch (Exception e){
                             System.out.println(e.getMessage());
                         }
@@ -325,6 +331,8 @@ public class JukeBoxMain {
                 }
             }
         }
+        catch (InputMismatchException e) {
+            System.out.println(e.getMessage());}
         catch (Exception e){
             System.out.println(e.getMessage());
         }
