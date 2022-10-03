@@ -6,12 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 public class SongsDAO {
 
 // to insert a song in catlog
-    public static int insertSong(Songs song) throws Exception {
+    public static int insertSong(Songs song) throws InputMismatchException,Exception {
         int res=0;
             if (song.getSongId() != 0) {          // when Song is created with songId parameter constructor
                 PreparedStatement selectStatement = JukeBoxConnection.getJukeBoxConnection().prepareStatement("insert into songs(songId,songName,artist,genre,album,duration) values(?,?,?,?,?,?);");

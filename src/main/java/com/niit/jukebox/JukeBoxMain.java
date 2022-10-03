@@ -97,7 +97,11 @@ public class JukeBoxMain {
                                     default:
                                         System.out.println("Wrong input");
                                 }
-                            } catch (Exception e) {
+                            } catch (InputMismatchException e) {
+                                System.out.println("Wrong Input entered");
+                            }
+
+                            catch (Exception e) {
                                 System.out.println(e.getMessage());
                             }
                             if (choice2 != 6) {
